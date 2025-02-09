@@ -1,6 +1,6 @@
-Hi, I’m Liyo C Raju
-I’m interested in Programming
-I’m currently learning Data science
+  Hi, I’m Liyo C Raju
+  I’m interested in Programming
+  I’m currently learning Data science
 
 
 <!---
