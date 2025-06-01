@@ -106,6 +106,15 @@ def load_custom_css():
     """Inject custom CSS styles."""
     st.markdown("""
         <style>
+        /* Hide GitHub corner icon */
+            [data-testid="stDecoration"] {
+                display: none !important;
+            }
+
+            /* Hide user avatar */
+            header [data-testid="avatar"] {
+                display: none !important;
+            }
             .header-container {
                 background-color: #5b3cc4;
                 padding: 2rem;
