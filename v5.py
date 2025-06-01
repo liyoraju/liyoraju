@@ -185,12 +185,7 @@ def render_intro():
     st.markdown("""
         <div class="chat-box">
             Hello! I'm your Library Assistant. I can help you find books, research materials, and answer questions about our library services. What would you like to know today?
-            <div style="margin-top: 0.5rem;">
-                <span class="chip">AI books</span>
-                <span class="chip">Blockchain</span>
-                <span class="chip">Library hours</span>
-                <span class="chip">E-books</span>
-            </div>
+            
         </div>
     """, unsafe_allow_html=True)
 
