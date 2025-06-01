@@ -106,29 +106,28 @@ def load_custom_css():
     """Inject custom CSS styles."""
     st.markdown("""
         <style>
-            /* Hide GitHub icon */
-            header [data-testid="stToolbar"] {
+            /* Hide Streamlit footer (Made with Streamlit) */
+            footer, .st-emotion-cache-zj8gb8 {
                 visibility: hidden;
                 height: 0px;
             }
 
-            /* Hide Streamlit footer */
-            footer {
-                visibility: hidden;
-                height: 0px;
-            }
-
-            /* Hide top right avatar */
+            /* Hide top right user avatar */
             header [data-testid="avatar"] {
                 display: none !important;
             }
 
-            /* Hide any bottom avatars or contributor icons */
+            /* Hide GitHub corner icon */
+            [data-testid="stDecoration"] {
+                display: none !important;
+            }
+
+            /* Hide bottom avatars / status widgets */
             [data-testid="stStatusWidget"] {
                 display: none !important;
             }
 
-            /* Optional: Hide hamburger menu */
+            /* Optional: Hide hamburger sidebar nav */
             [data-testid="stSidebarNav"] {
                 display: none !important;
             }
@@ -170,6 +169,7 @@ def load_custom_css():
             }
         </style>
     """, unsafe_allow_html=True)
+
 
 
 
@@ -223,9 +223,9 @@ def render_result_item(item: dict):
     # Action links
     links = []
     if pdf_url:
-        links.append(f"[📥]({pdf_url})")
+        links.append(f"[📥 PDF Download]({pdf_url})")
     if openalex_url:
-        links.append(f"[🔗]({openalex_url})")
+        links.append(f"[🔗 OpenAlex Link]({openalex_url})")
     if links:
         st.markdown(" | ".join(links), unsafe_allow_html=True)
 
