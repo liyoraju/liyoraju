@@ -106,13 +106,13 @@ def load_custom_css():
     """Inject custom CSS styles."""
     st.markdown("""
         <style>
-            /* Hide Streamlit footer (Made with Streamlit) */
-            footer, .st-emotion-cache-zj8gb8 {
+            /* Hide Streamlit footer */
+            footer {
                 visibility: hidden;
                 height: 0px;
             }
 
-            /* Hide top right user avatar */
+            /* Hide top-right avatar */
             header [data-testid="avatar"] {
                 display: none !important;
             }
@@ -122,13 +122,13 @@ def load_custom_css():
                 display: none !important;
             }
 
-            /* Hide bottom avatars / status widgets */
+            /* Hide bottom status widget avatars */
             [data-testid="stStatusWidget"] {
                 display: none !important;
             }
 
-            /* Optional: Hide hamburger sidebar nav */
-            [data-testid="stSidebarNav"] {
+            /* Extra: Hide sidebar if needed */
+            [data-testid="stSidebar"] {
                 display: none !important;
             }
 
@@ -169,6 +169,7 @@ def load_custom_css():
             }
         </style>
     """, unsafe_allow_html=True)
+
 
 
 
