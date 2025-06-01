@@ -173,6 +173,7 @@ def load_custom_css():
 
 
 
+
 def render_header():
     """Display the application header."""
     st.markdown("""
