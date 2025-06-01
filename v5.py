@@ -122,18 +122,20 @@ def load_custom_css():
                 opacity: 0.85;
             }
             .chat-box {
-                background-color: #f5f5f5;
+                background-color:rgb(255, 255, 255);
                 border-radius: 12px;
                 padding: 2rem;
                 margin-bottom: 2rem;
+                color: black;
             }
             .chip {
-                background-color: #e0e7ff;
+                background-color: #5b3cc4;
                 padding: 0.4rem 0.8rem;
                 border-radius: 999px;
                 margin: 0.2rem;
                 display: inline-block;
                 font-size: 0.85rem;
+                color: white;
             }
         </style>
     """, unsafe_allow_html=True)
