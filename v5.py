@@ -236,6 +236,15 @@ def render_result_item(item: dict):
 # ======================
 def main():
     setup_page_config()
+
+    # Hide Streamlit menu and footer
+    hide_streamlit_style = """
+        <style>
+        #MainMenu {visibility: hidden;}
+        footer {visibility: hidden;}
+        </style>
+    """
+    st.markdown(hide_streamlit_style, unsafe_allow_html=True)
     load_custom_css()
     render_header()
     render_intro()
