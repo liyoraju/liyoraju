@@ -99,46 +99,36 @@ Answer:"""
 # UI COMPONENTS
 # ======================
 
-# Hide Streamlit branding and menu
-hide_streamlit_style = """
-    <style>
-    #MainMenu {visibility: hidden;}
-    footer {visibility: hidden;}
-    </style>
-"""
-st.markdown(hide_streamlit_style, unsafe_allow_html=True)
-
 def setup_page_config():
     """Configure Streamlit page settings."""
-    st.set_page_config(page_title="OpenAlex Library Chatbot By Wexor ai", layout="centered")
+    st.set_page_config(page_title="OpenAlex Library Chatbot By Wexor AI", layout="centered")
 
 def load_custom_css():
-    """Inject custom CSS styles."""
+    """Inject custom CSS styles including hiding Streamlit branding."""
     st.markdown("""
         <style>
+            /* Hide Streamlit footer and menu */
+            #MainMenu {visibility: hidden;}
+            footer {visibility: hidden;}
+            header {visibility: hidden;}
+
             /* Hide GitHub icon */
             header [data-testid="stToolbar"] {
                 visibility: hidden;
                 height: 0px;
             }
 
-            /* Hide Streamlit footer */
-            footer {
-                visibility: hidden;
-                height: 0px;
-            }
-
-            /* Hide top right avatar */
+            /* Hide avatar in header */
             header [data-testid="avatar"] {
                 display: none !important;
             }
 
-            /* Hide any bottom avatars or contributor icons */
+            /* Hide bottom right feedback avatar/status widget */
             [data-testid="stStatusWidget"] {
                 display: none !important;
             }
 
-            /* Optional: Hide hamburger menu */
+            /* Optional: Hide sidebar nav if needed */
             [data-testid="stSidebarNav"] {
                 display: none !important;
             }
