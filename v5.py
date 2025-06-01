@@ -115,10 +115,21 @@ def load_custom_css():
             /* Hide Streamlit footer */
             footer {
                 visibility: hidden;
+                height: 0px;
             }
 
-            /* Hide user avatar */
+            /* Hide top right avatar */
             header [data-testid="avatar"] {
+                display: none !important;
+            }
+
+            /* Hide any bottom avatars or contributor icons */
+            [data-testid="stStatusWidget"] {
+                display: none !important;
+            }
+
+            /* Optional: Hide hamburger menu */
+            [data-testid="stSidebarNav"] {
                 display: none !important;
             }
 
@@ -159,6 +170,7 @@ def load_custom_css():
             }
         </style>
     """, unsafe_allow_html=True)
+
 
 
 def render_header():
