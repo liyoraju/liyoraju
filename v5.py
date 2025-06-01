@@ -100,7 +100,7 @@ Answer:"""
 # ======================
 def setup_page_config():
     """Configure Streamlit page settings."""
-    st.set_page_config(page_title="OpenAlex Library Chatbot", layout="centered")
+    st.set_page_config(page_title="OpenAlex Library Chatbot By Wexor ai", layout="centered")
 
 def load_custom_css():
     """Inject custom CSS styles."""
@@ -144,7 +144,7 @@ def render_header():
     """Display the application header."""
     st.markdown("""
         <div class="header-container">
-            <div class="header-title">🤖 Library Assistant</div>
+            <div class="header-title">🤖 Library Assistant By Wexor AI</div>
             <div class="header-subtitle">Ask me about books, research materials, and library services</div>
         </div>
     """, unsafe_allow_html=True)
