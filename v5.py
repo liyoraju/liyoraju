@@ -98,6 +98,16 @@ Answer:"""
 # ======================
 # UI COMPONENTS
 # ======================
+
+# Hide Streamlit branding and menu
+hide_streamlit_style = """
+    <style>
+    #MainMenu {visibility: hidden;}
+    footer {visibility: hidden;}
+    </style>
+"""
+st.markdown(hide_streamlit_style, unsafe_allow_html=True)
+
 def setup_page_config():
     """Configure Streamlit page settings."""
     st.set_page_config(page_title="OpenAlex Library Chatbot By Wexor ai", layout="centered")
