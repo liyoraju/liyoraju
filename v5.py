@@ -106,29 +106,30 @@ def load_custom_css():
     """Inject custom CSS styles."""
     st.markdown("""
         <style>
+            /* Hide GitHub icon */
+            header [data-testid="stToolbar"] {
+                visibility: hidden;
+                height: 0px;
+            }
+
             /* Hide Streamlit footer */
             footer {
                 visibility: hidden;
                 height: 0px;
             }
 
-            /* Hide top-right avatar */
+            /* Hide top right avatar */
             header [data-testid="avatar"] {
                 display: none !important;
             }
 
-            /* Hide GitHub corner icon */
-            [data-testid="stDecoration"] {
-                display: none !important;
-            }
-
-            /* Hide bottom status widget avatars */
+            /* Hide any bottom avatars or contributor icons */
             [data-testid="stStatusWidget"] {
                 display: none !important;
             }
 
-            /* Extra: Hide sidebar if needed */
-            [data-testid="stSidebar"] {
+            /* Optional: Hide hamburger menu */
+            [data-testid="stSidebarNav"] {
                 display: none !important;
             }
 
@@ -169,11 +170,6 @@ def load_custom_css():
             }
         </style>
     """, unsafe_allow_html=True)
-
-
-
-
-
 
 def render_header():
     """Display the application header."""
