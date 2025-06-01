@@ -2,7 +2,7 @@ import streamlit as st
 import requests
 import re
 import os
-
+import streamlit.components.v1 as components
 # ======================
 # CONFIGURATION
 # ======================
@@ -98,41 +98,14 @@ Answer:"""
 # ======================
 # UI COMPONENTS
 # ======================
-
 def setup_page_config():
     """Configure Streamlit page settings."""
-    st.set_page_config(page_title="OpenAlex Library Chatbot By Wexor AI", layout="centered")
+    st.set_page_config(page_title="OpenAlex Library Chatbot By Wexor ai", layout="centered")
 
 def load_custom_css():
-    """Inject custom CSS styles including hiding Streamlit branding."""
+    """Inject custom CSS styles."""
     st.markdown("""
         <style>
-            /* Hide Streamlit footer and menu */
-            #MainMenu {visibility: hidden;}
-            footer {visibility: hidden;}
-            header {visibility: hidden;}
-
-            /* Hide GitHub icon */
-            header [data-testid="stToolbar"] {
-                visibility: hidden;
-                height: 0px;
-            }
-
-            /* Hide avatar in header */
-            header [data-testid="avatar"] {
-                display: none !important;
-            }
-
-            /* Hide bottom right feedback avatar/status widget */
-            [data-testid="stStatusWidget"] {
-                display: none !important;
-            }
-
-            /* Optional: Hide sidebar nav if needed */
-            [data-testid="stSidebarNav"] {
-                display: none !important;
-            }
-
             .header-container {
                 background-color: #5b3cc4;
                 padding: 2rem;
@@ -140,25 +113,21 @@ def load_custom_css():
                 color: white;
                 text-align: center;
             }
-
             .header-title {
                 font-size: 1.8rem;
                 font-weight: bold;
             }
-
             .header-subtitle {
                 font-size: 1rem;
                 opacity: 0.85;
             }
-
             .chat-box {
-                background-color: rgb(255, 255, 255);
+                background-color:rgb(255, 255, 255);
                 border-radius: 12px;
                 padding: 2rem;
                 margin-bottom: 2rem;
                 color: black;
             }
-
             .chip {
                 background-color: #5b3cc4;
                 padding: 0.4rem 0.8rem;
@@ -185,7 +154,6 @@ def render_intro():
     st.markdown("""
         <div class="chat-box">
             Hello! I'm your Library Assistant. I can help you find books, research materials, and answer questions about our library services. What would you like to know today?
-            
         </div>
     """, unsafe_allow_html=True)
 
@@ -216,9 +184,9 @@ def render_result_item(item: dict):
     # Action links
     links = []
     if pdf_url:
-        links.append(f"[📥 PDF Download]({pdf_url})")
+        links.append(f"[📥]({pdf_url})")
     if openalex_url:
-        links.append(f"[🔗 OpenAlex Link]({openalex_url})")
+        links.append(f"[🔗]({openalex_url})")
     if links:
         st.markdown(" | ".join(links), unsafe_allow_html=True)
 
@@ -231,15 +199,26 @@ def render_result_item(item: dict):
 # ======================
 def main():
     setup_page_config()
-
-    hide_streamlit_style = """
-        <style>
-        #MainMenu {visibility: hidden;}
-        footer {visibility: hidden;}
-        .viewerBadge_container__1QSob {display: none !important;}
-        </style>
-    """
-    st.markdown(hide_streamlit_style, unsafe_allow_html=True)
+    
+    # Add the footer removal script here (right after setup_page_config)
+    components.html("""
+    <script>
+    // Remove Streamlit footer
+    const removeFooter = () => {
+        const footer = window.parent.document.querySelector("footer");
+        if (footer) {
+            footer.style.display = "none";
+        }
+    }
+    // Run on load and on content changes
+    removeFooter();
+    new MutationObserver(removeFooter).observe(document, {
+        childList: true,
+        subtree: true
+    });
+    </script>
+    """, height=0)
+    
     load_custom_css()
     render_header()
     render_intro()
