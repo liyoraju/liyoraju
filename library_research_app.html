@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library Research Assistant</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .robot-icon {
+            width: 60px;
+            height: 60px;
+            background: white;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+            font-size: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem;
+            flex: 1;
+        }
+
+        .chat-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+            min-height: 500px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 2rem;
+            overflow-y: auto;
+            max-height: 400px;
+        }
+
+        .message {
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+        .message.assistant {
+            background: #f8fafc;
+            padding: 1.5rem;
+            border-radius: 15px;
+            border-left: 4px solid #5a67d8;
+        }
+
+        .message-icon {
+            width: 40px;
+            height: 40px;
+            background: #5a67d8;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .message-content {
+            flex: 1;
+        }
+
+        .message-content h3 {
+            color: #1a202c;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .message-content p {
+            color: #4a5568;
+            line-height: 1.6;
+        }
+
+        .quick-topics {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+
+        .topic-button {
+            background: #edf2f7;
+            color: #5a67d8;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            border: none;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .topic-button:hover {
+            background: #5a67d8;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .input-section {
+            padding: 2rem;
+            border-top: 1px solid #e2e8f0;
+            background: #f8fafc;
+        }
+
+        .input-container {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            max-width: 100%;
+        }
+
+        .input-wrapper {
+            flex: 1;
+            position: relative;
+            width: 100%;
+        }
+
+        .research-input {
+            width: 100%;
+            padding: 1.25rem 2rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            resize: none;
+            min-height: 65px;
+            max-height: 65px;
+            transition: all 0.3s ease;
+            font-family: inherit;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .research-input:focus {
+            outline: none;
+            border-color: #5a67d8;
+            box-shadow: 0 0 0 3px rgba(90, 103, 216, 0.1);
+        }
+
+        .research-input::placeholder {
+            color: #a0aec0;
+        }
+
+        .send-button {
+            background: linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%);
+            color: white;
+            border: none;
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+            box-shadow: 0 4px 15px rgba(90, 103, 216, 0.2);
+        }
+
+        .send-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(90, 103, 216, 0.3);
+        }
+
+        .send-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+            color: #5a67d8;
+        }
+
+        .loading.show {
+            display: block;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #e2e8f0;
+            border-top: 4px solid #5a67d8;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .results-container {
+            margin-top: 1.5rem;
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .result-item {
+            padding: 1rem 0;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .result-item:last-child {
+            border-bottom: none;
+        }
+
+        .result-title {
+            font-weight: 600;
+            color: #1a202c;
+            margin-bottom: 0.5rem;
+        }
+
+        .result-authors {
+            color: #5a67d8;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .result-abstract {
+            color: #4a5568;
+            line-height: 1.5;
+            font-size: 0.95rem;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .header {
+                padding: 1.5rem;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .input-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .send-button {
+                align-self: flex-end;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="robot-icon">🤖</div>
+        <h1>Library Research Assistant</h1>
+        <p>Ask me about books, research materials, and academic resources</p>
+    </div>
+
+    <div class="container">
+        <div class="chat-container">
+            <div class="chat-messages" id="chatMessages">
+                <div class="message assistant">
+                    <div class="message-icon">🤖</div>
+                    <div class="message-content">
+                        <h3>Hello! I'm your Library Research Assistant.</h3>
+                        <p>I can help you find academic papers, research materials, and answer questions about library resources. What would you like to research today?</p>
+                        <div class="quick-topics">
+                            <button class="topic-button" onclick="setQuery('AI and machine learning applications')">AI & ML</button>
+                            <button class="topic-button" onclick="setQuery('Climate change research')">Climate Change</button>
+                            <button class="topic-button" onclick="setQuery('Medical research developments')">Medical Research</button>
+                            <button class="topic-button" onclick="setQuery('Educational technology')">EdTech</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p>Searching academic databases...</p>
+            </div>
+
+            <div class="input-section">
+                <div class="input-container">
+                    <div class="input-wrapper">
+                        <textarea 
+                            class="research-input" 
+                            id="researchInput" 
+                            placeholder="Type your research question here... (e.g., 'How does AI impact education?' or 'Latest research on climate change')"
+                            rows="1"
+                        ></textarea>
+                    </div>
+                    <button class="send-button" id="sendButton" onclick="submitQuery()">
+                        ➤
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Auto-resize textarea
+        const textarea = document.getElementById('researchInput');
+        textarea.addEventListener('input', function() {
+            this.style.height = 'auto';
+            this.style.height = Math.min(this.scrollHeight, 120) + 'px';
+        });
+
+        // Handle Enter key
+        textarea.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                submitQuery();
+            }
+        });
+
+        function setQuery(query) {
+            document.getElementById('researchInput').value = query;
+            document.getElementById('researchInput').focus();
+        }
+
+        function addMessage(content, isUser = false) {
+            const messagesContainer = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${isUser ? 'user' : 'assistant'}`;
+            
+            if (!isUser) {
+                messageDiv.innerHTML = `
+                    <div class="message-icon">🤖</div>
+                    <div class="message-content">
+                        ${content}
+                    </div>
+                `;
+            } else {
+                messageDiv.innerHTML = `
+                    <div class="message-content">
+                        <strong>You:</strong> ${content}
+                    </div>
+                `;
+            }
+            
+            messagesContainer.appendChild(messageDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        function showLoading(show) {
+            const loading = document.getElementById('loading');
+            const sendButton = document.getElementById('sendButton');
+            
+            if (show) {
+                loading.classList.add('show');
+                sendButton.disabled = true;
+            } else {
+                loading.classList.remove('show');
+                sendButton.disabled = false;
+            }
+        }
+
+        async function submitQuery() {
+            const input = document.getElementById('researchInput');
+            const query = input.value.trim();
+            
+            if (!query) return;
+            
+            // Add user message
+            addMessage(query, true);
+            input.value = '';
+            input.style.height = 'auto';
+            
+            showLoading(true);
+            
+            try {
+                // Simulate backend API call
+                await simulateResearch(query);
+            } catch (error) {
+                addMessage(`<p><strong>Error:</strong> ${error.message}</p>`);
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        async function simulateResearch(query) {
+            const API_BASE_URL = 'http://localhost:5000/api';
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/research`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ query: query })
+                });
+                
+                if (!response.ok) {
+                    const error = await response.json();
+                    throw new Error(error.error || 'Research request failed');
+                }
+                
+                const data = await response.json();
+                
+                // Display results
+                let resultsHTML = '<h3>Research Summary</h3>';
+                //resultsHTML += `<p><strong>Search Keywords:</strong> ${data.keywords}</p>`;
+                //resultsHTML += `<p><strong>Found ${data.total_results} relevant papers</strong></p>`;
+                
+                if (data.summary) {
+                    resultsHTML += '<div style="background: #f8fafc; padding: 1rem; border-radius: 10px; margin: 1rem 0;">';
+                    resultsHTML += '<h4>AI-Generated Summary:</h4>';
+                    resultsHTML += `<p>${data.summary.replace(/\n/g, '<br>').replace(/\*\*/g, '')}</p>`;
+                    resultsHTML += '</div>';
+                }
+                
+                if (data.papers && data.papers.length > 0) {
+                    resultsHTML += '<div class="results-container">';
+                    resultsHTML += '<h4>Source Papers:</h4>';
+                    
+                    data.papers.slice(0, 5).forEach((paper, index) => {
+                        const authors = Array.isArray(paper.authors) ? paper.authors.join(', ') : paper.authors;
+                        const year = paper.publication_year ? ` (${paper.publication_year})` : '';
+                        const citations = paper.citation_count ? ` • ${paper.citation_count} citations` : '';
+                        
+                        resultsHTML += `
+                            <div class="result-item">
+                                <div class="result-title">${paper.title}</div>
+                                <div class="result-authors">${authors}${year}${citations}</div>
+                                ${paper.abstract ? `<div class="result-abstract">${paper.abstract}</div>` : ''}
+                                ${paper.url ? `<div style="margin-top: 0.5rem;"><a href="${paper.url}" target="_blank" style="color: #5a67d8; text-decoration: none;">📄 View Paper</a></div>` : ''}
+                            </div>
+                        `;
+                    });
+                    
+                    resultsHTML += '</div>';
+                }
+                
+                addMessage(resultsHTML);
+                
+            } catch (error) {
+                console.error('Research error:', error);
+                addMessage(`<p><strong>Error:</strong> ${error.message}</p><p>Make sure your Flask server is running on localhost:5000 and your OpenRouter API key is configured.</p>`);
+            }
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('researchInput').focus();
+        });
+    </script>
+</body>
+</html>
