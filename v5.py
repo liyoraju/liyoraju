@@ -106,15 +106,22 @@ def load_custom_css():
     """Inject custom CSS styles."""
     st.markdown("""
         <style>
-        /* Hide GitHub corner icon */
-            [data-testid="stDecoration"] {
-                display: none !important;
+            /* Hide GitHub icon */
+            header [data-testid="stToolbar"] {
+                visibility: hidden;
+                height: 0px;
+            }
+
+            /* Hide Streamlit footer */
+            footer {
+                visibility: hidden;
             }
 
             /* Hide user avatar */
             header [data-testid="avatar"] {
                 display: none !important;
             }
+
             .header-container {
                 background-color: #5b3cc4;
                 padding: 2rem;
@@ -122,21 +129,25 @@ def load_custom_css():
                 color: white;
                 text-align: center;
             }
+
             .header-title {
                 font-size: 1.8rem;
                 font-weight: bold;
             }
+
             .header-subtitle {
                 font-size: 1rem;
                 opacity: 0.85;
             }
+
             .chat-box {
-                background-color:rgb(255, 255, 255);
+                background-color: rgb(255, 255, 255);
                 border-radius: 12px;
                 padding: 2rem;
                 margin-bottom: 2rem;
                 color: black;
             }
+
             .chip {
                 background-color: #5b3cc4;
                 padding: 0.4rem 0.8rem;
@@ -148,6 +159,7 @@ def load_custom_css():
             }
         </style>
     """, unsafe_allow_html=True)
+
 
 def render_header():
     """Display the application header."""
